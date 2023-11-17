@@ -1,0 +1,9 @@
+*.log
+*.err
+
+rna/body/.snakemake/*
+rna/body/results/*
+
+rna/head/results/*
+rna/head/.snakemake/*
+
