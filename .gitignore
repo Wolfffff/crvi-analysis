@@ -3,7 +3,13 @@
 
 rna/body/.snakemake/*
 rna/body/results/*
+rna/body/results_sample/*
+rna/body/resources/*
 
 rna/head/results/*
 rna/head/.snakemake/*
+rna/head/results_sample/*
+rna/head/resources/*
 
+dna/project_crvi_longevity/.snakemake/*
+dna/project_crvi_longevity/data/*
