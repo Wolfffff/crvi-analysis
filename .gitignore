@@ -13,3 +13,5 @@ rna/head/resources/*
 
 dna/project_crvi_longevity/.snakemake/*
 dna/project_crvi_longevity/data/*
+
+*.rds
