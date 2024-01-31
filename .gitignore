@@ -15,3 +15,8 @@ dna/project_crvi_longevity/.snakemake/*
 dna/project_crvi_longevity/data/*
 
 *.rds
+rna/eQTLmapping/.snakemake/
+rna/eQTLmapping/cache/
+rna/eQTLmapping/detections/
+rna/eQTLmapping/bed_files/
+rna/eQTLmapping/results/
