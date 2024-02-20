@@ -1,0 +1,192 @@
+
+tissues = ["body", "head"]
+
+# Set the path to the Beagle executable
+# TODO: 
+beagle_executable = "/Genomics/argo/users/swwolf/bin/beagle.22Jul22.46e.jar"
+
+def get_tissue(wildcards):
+    if type(wildcards) == str:
+        t = wildcards
+    else:
+        t = wildcards.tissue
+    return t
+
+def get_genes(wildcards):
+    tissue = get_tissue(wildcards)
+    gene_list = "phenotypes/{tissue}.genes.txt".format(tissue=tissue)
+    with open(gene_list) as f:
+        genes = f.read().splitlines()
+    return genes
+
+def get_output_gxe(wildcards):
+    tissue = get_tissue(wildcards)
+    genes = get_genes(tissue)
+    return ["results/gxe/{tissue}/{gene}.tsv".format(tissue=tissue, gene=gene) for gene in genes]
+
+def get_output_eqtl(wildcards):
+    tissue = get_tissue(wildcards)
+    genes = get_genes(tissue)
+    return ["results/eqtl/{tissue}/{gene}.tsv".format(tissue=tissue, gene=gene) for gene in genes]
+
+rule all:
+    input:
+        expand("vcf_files/imputed/{tissue}.imputed.vcf.gz", tissue=tissues),
+        expand("bed_files/{tissue}.bed", tissue=tissues),
+        expand("sample_list/{tissue}.txt", tissue=tissues),
+        expand("GRMs/{tissue}.cXX.txt", tissue=tissues), 
+        expand("cache/Va.{tissue}.tsv", tissue=tissues),
+        # TODO: Add them back once we're happy with prior steps
+        [get_output_gxe(tissue) for tissue in tissues],
+        [get_output_eqtl(tissue) for tissue in tissues]
+
+rule beagle:
+    threads: 16
+    resources:
+        cores=lambda wc, threads: threads,
+        mem_mb=lambda wc, attempt: attempt * 128000
+    log:
+        "logs/beagle/{tissue}.log"
+    input:
+        vcf_file="vcf_files/{tissue}.vcf"
+    output:
+        imputed_vcf="vcf_files/imputed/{tissue}.imputed.vcf.gz"
+    params:
+        nthreads=16,  # Number of CPU threads to use
+        window=40     
+    shell:
+        """
+        java -Xmx{resources.mem_mb}m -jar {beagle_executable} gt={input.vcf_file} out=vcf_files/imputed/{wildcards.tissue}.imputed nthreads={params.nthreads} window={params.window}
+        """
+
+rule getVCFSamples:
+    input:
+        vcf_file="vcf_files/imputed/{tissue}.imputed.vcf.gz"
+    output:
+        sample_file="sample_list/{tissue}.txt"
+    shell:
+        """
+        mkdir -p sample_list
+        bcftools query -l {input.vcf_file} > sample_list/{wildcards.tissue}.txt
+        """
+
+rule bed_files:
+    threads: 1
+    resources:
+        cores=lambda wc, threads: threads,
+        mem_mb=lambda wc, attempt: attempt * 32000
+    log:   
+        "logs/bed_files/{tissue}.log"
+    input:
+        vcf_file="vcf_files/imputed/{tissue}.imputed.vcf.gz"
+    output:
+        bed_file="bed_files/{tissue}.bed",
+        bim_file="bed_files/{tissue}.bim",
+        fam_file="bed_files/{tissue}.fam"
+    shell:
+        """
+        mkdir -p bed_files
+        plink2 --vcf {input.vcf_file} --allow-extra-chr --make-bed --set-missing-var-ids "@:#" --out bed_files/{wildcards.tissue}
+        sed -i 's/-9/0/g' bed_files/{wildcards.tissue}.fam
+        """
+
+rule GRM:
+    threads: 1
+    resources:
+        cores=lambda wc, threads: threads,
+        mem_mb=lambda wc, attempt: attempt * 32000
+    input:
+        bed_file="bed_files/{tissue}.bed"
+    output:
+        grm="GRMs/{tissue}.cXX.txt"
+    params:
+        num_threads=8  # Number of CPU threads to use
+    shell:
+        """
+        mkdir -p GRMs
+        gemma -bfile bed_files/{wildcards.tissue} -gk 1 -o {wildcards.tissue}
+        mv output/{wildcards.tissue}* GRMs/
+        """
+
+rule eigenGRM:
+    threads: 1
+    resources:
+        cores=lambda wc, threads: threads,
+        mem_mb=lambda wc, attempt: attempt * 32000
+    input:
+        bed_file="bed_files/{tissue}.bed",
+        grm="GRMs/{tissue}.cXX.txt"
+    output:
+        eigD="GRMs/{tissue}.eigenD.txt",
+        eigU="GRMs/{tissue}.eigenU.txt"
+    params:
+        num_threads=8  # Number of CPU threads to use
+    shell:
+        """
+        mkdir -p GRMs
+        gemma -bfile bed_files/{wildcards.tissue} -k {input.grm} -eigen -o {wildcards.tissue}
+        mv output/{wildcards.tissue}* GRMs/
+        """
+
+rule prepare_pheno:
+    threads: 1
+    resources:
+        cores=lambda wc, threads: threads,
+        mem_mb=lambda wc, attempt: attempt * 32000
+    input:
+    # TODO: Hardcoded path
+        rna_seq="cache/rnaseq_all_2023-12-04.rds",
+        sample_list="sample_list/{tissue}.txt"
+    output:
+        covariates="covariates/{tissue}.tsv",
+        phenotypes="phenotypes/{tissue}.tsv",
+        gene_list="phenotypes/{tissue}.genes.txt"
+    script:
+        "scripts/export_covariates.R"
+
+rule calcVa:
+    threads: 64
+    resources:
+        cores=lambda wc, threads: threads,
+        mem_mb=lambda wc, attempt: attempt * 32000
+    input:
+        grm="GRMs/{tissue}.cXX.txt",
+        phenotypes="phenotypes/{tissue}.tsv",
+        covariates="covariates/{tissue}.tsv",
+        gene_list="phenotypes/{tissue}.genes.txt"
+    output:
+        Va="cache/Va.{tissue}.tsv"
+    script:
+        "scripts/calcVa.R"
+
+rule runGxEGridLMM:
+    threads: 1
+    resources:
+        cores=lambda wc, threads: threads,
+        mem_mb=lambda wc, attempt: attempt * 64000
+    input:
+        grm="GRMs/{tissue}.cXX.txt",
+        phenotypes="phenotypes/{tissue}.tsv",
+        covariates="covariates/{tissue}.tsv",
+        gene_list="phenotypes/{tissue}.genes.txt",
+        Va="cache/Va.{tissue}.tsv"
+    output:
+        results="results/gxe/{tissue}/{gene}.tsv"
+    script:
+        "scripts/runGxEGridLMM.R"
+
+rule runGridLMM:
+    threads: 1
+    resources:
+        cores=lambda wc, threads: threads,
+        mem_mb=lambda wc, attempt: attempt * 64000
+    input:
+        grm="GRMs/{tissue}.cXX.txt",
+        phenotypes="phenotypes/{tissue}.tsv",
+        covariates="covariates/{tissue}.tsv",
+        gene_list="phenotypes/{tissue}.genes.txt",
+        Va="cache/Va.{tissue}.tsv"
+    output:
+        results="results/eqtl/{tissue}/{gene}.tsv"
+    script:
+        "scripts/runGridLMM.R"
