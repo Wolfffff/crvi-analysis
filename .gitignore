@@ -38,3 +38,6 @@ rna/tmp/*
 rna/decoherence/differential_correlation/
 rna/rna-seq-star-deseq2
 *.vcf
+*sort_temp*
+acute/dna/benchmarks/*
+acute/dna/logs/*
