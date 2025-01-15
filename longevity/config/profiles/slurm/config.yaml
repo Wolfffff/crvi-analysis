@@ -1,6 +1,6 @@
 executor: slurm
 use-conda: True
-jobs: 100 # Have up to N jobs submitted at any given time
+jobs: 1024 # Have up to N jobs submitted at any given time
 latency-wait: 100 # Wait N seconds for output files due to latency
 retries: 0 # Retry jobs N times.
 
@@ -10,7 +10,7 @@ default-resources:
   mem_mb_reduced: (attempt * 4000) * 0.9 # Mem allocated to java for GATK rules (tries to prevent OOM errors)
   slurm_partition: ""
   slurm_account: # Same as sbatch -A. Not all clusters use this.
-  runtime: 30 # In minutes 
+  runtime: 720 # In minutes 
 
 
 # Control number of threads each rule will use.
@@ -90,7 +90,7 @@ set-threads:
   sentieon_combine_gvcf: 1
   sentieon_bam_stats: 1 # Does NOT use more than 1 thread.
 
-Control other resources used by each rule.
+# Control other resources used by each rule.
 set-resources:
   # # Reference Genome Processing
   # copy_reference:
@@ -167,25 +167,25 @@ set-resources:
     runtime:
     cpus_per_task: 4
   merge_bams:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:
 
   # GVCF  
   bam2gvcf: # HaplotypeCaller
-    mem_mb: attempt * 2000
-    mem_mb_reduced: (attempt * 2000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
+    mem_mb: attempt * 10000
+    mem_mb_reduced: (attempt * 10000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
     slurm_partition:
     runtime:
     cpus_per_task: # Mem allocated to the snakemake job
   concat_gvcfs:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:
   bcftools_norm:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:

@@ -2,7 +2,11 @@ snpArcher
 
 
 
+acute/dna/.snakemake/*
+acute/dna/results/*
 
+longevity/.snakemake/*
+longevity/results/*
 
 *.log
 *.err

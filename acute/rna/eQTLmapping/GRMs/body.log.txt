@@ -1,0 +1,27 @@
+##
+## GEMMA Version    = 0.98.3 (2020-11-28)
+## Build profile    = 
+## GCC version      = 7.5.0
+## GSL Version      = 1.16
+## OpenBlas         = OpenBLAS 0.3.12  - OpenBLAS 0.3.25 DYNAMIC_ARCH NO_AFFINITY Zen MAX_THREADS=128
+##   arch           = Zen
+##   threads        = 1
+##   parallel type  = threaded
+##
+## Command Line Input = gemma -bfile bed_files/body -gk 1 -o body 
+##
+## Date = Fri Feb  2 14:03:03 2024
+##
+## Summary Statistics:
+## number of total individuals = 768
+## number of analyzed individuals = 768
+## number of covariates = 1
+## number of phenotypes = 1
+## number of total SNPs/var = 919768
+## number of analyzed SNPs/var = 821883
+##
+## Computation Time:
+## total computation time = 8.38357 min 
+## computation time break down: 
+##      time on calculating relatedness matrix = 8.13158 min 
+##

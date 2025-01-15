@@ -1,3 +1,0 @@
-vcf_files: ["data/GXEpaper/HEAD/genotypes/VCF/Dmel_head_hs_ctrl_Miss80_MAF5_LD8_HWE_1975ind"]
-#fdr: [1e-2,1e-3,1e-4]
-type: "batch" # "layer" or "batch"
