@@ -2,8 +2,8 @@
 # Variables you need to change
 ##############################
 
-samples: "/scratch/tmp/ed7982/chromium/01_snpcalling/sample_sheet.csv" # path to the sample metadata CSV
-final_prefix: "chromium" # prefix for final output files
+samples: "/Genomics/argo/users/ed7982/crvi-analysis/longevity/longevity_sample_sheet.csv" # path to the sample metadata CSV
+final_prefix: "longevity" # prefix for final output files
 intervals: True #Set to True if you want to perform variant calling using interval approach.
 sentieon: False #set to True if you want to use sentieon, False if you want GATK
 sentieon_lic: "" #set to path of sentieon license
