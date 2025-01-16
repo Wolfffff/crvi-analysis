@@ -1,0 +1,39 @@
+sample name
+raw total sequences
+filtered sequences
+sequences
+is sorted
+1st fragments
+last fragments
+reads mapped
+reads mapped and paired
+reads unmapped
+reads properly paired
+reads paired
+reads duplicated
+reads MQ0
+reads QC failed
+non-primary alignments
+total length
+total first fragment length
+total last fragment length
+bases mapped
+bases mapped (cigar)
+bases trimmed
+bases duplicated
+mismatches
+error rate
+average length
+average first fragment length
+average last fragment length
+maximum length
+maximum first fragment length
+maximum last fragment length
+average quality
+insert size average
+insert size standard deviation
+inward oriented pairs
+outward oriented pairs
+pairs with other orientation
+pairs on different chromosomes
+percentage of properly paired reads (%)

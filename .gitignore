@@ -41,3 +41,5 @@ rna/rna-seq-star-deseq2
 *sort_temp*
 acute/dna/benchmarks/*
 acute/dna/logs/*
+
+/Genomics/argo/users/ed7982/crvi-analysis/acute/dna/manual_samstats/stats/*
