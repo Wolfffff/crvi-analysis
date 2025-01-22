@@ -19,7 +19,9 @@
 mamba activate snparcher
 snakemake -s ./snpArcher/workflow/Snakefile -d ./longevity --cores all --use-conda --workflow-profile ./longevity/config/profiles/slurm
 
-snakemake -s ./snpArcher/workflow/Snakefile -d ./acute/dna --cores all --use-conda --workflow-profile ./acute/dna/config/profiles/slurm --rerun-incomplete
+snakemake -s ./snpArcher/workflow/Snakefile -d ./acute/dna --cores all --use-conda --workflow-profile ./acute/dna/config/profiles/slurm --rerun-incomplete 
+
+--dry-run
 
 
 RNA
