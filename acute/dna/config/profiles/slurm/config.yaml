@@ -193,16 +193,16 @@ set-resources:
     runtime:
     cpus_per_task:
   gvcf2DB: # GenomicsDBImport
-    mem_mb: attempt * 4000
-    mem_mb_reduced: (attempt * 4000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
+    mem_mb: attempt * 40000
+    mem_mb_reduced: (attempt * 40000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
     slurm_partition:
     runtime:
     cpus_per_task:
     
   # VCF
   DB2vcf: # GenotypeGVCFs
-    mem_mb: attempt * 4000
-    mem_mb_reduced: (attempt * 4000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
+    mem_mb: attempt * 40000
+    mem_mb_reduced: (attempt * 40000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
     slurm_partition:
     runtime:
     cpus_per_task:

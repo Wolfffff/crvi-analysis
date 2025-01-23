@@ -30,3 +30,7 @@ conda activate snakemake
 
 cd  /Genomics/argo/users/ed7982/crvi-analysis/acute/rna/body
 snakedeploy deploy-workflow https://github.com/snakemake-workflows/rna-seq-star-deseq2 . --tag v2.1.2
+
+
+snakemake -s ./acute/rna/body/workflow/Snakefile -d ./acute/rna/body --cores all --use-conda --rerun-incomplete 
+snakemake --cores all --use-conda --rerun-incomplete 

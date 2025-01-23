@@ -67,3 +67,36 @@ cat rna_sample_sheet_headeronly.txt rna_sample_sheet_noheader.txt > rna_sample_s
 # -e 1
 # --nextseq-trim=20
 # --trim-n
+
+cd /Genomics/ayroleslab2/scott/git/chromium/data/acute/rna/
+for file in 2427__*fastq.gz; do echo "$file" | awk -F'2427__|-read' '{print $2}'; done | sort | uniq | grep "Chrom*" > /Genomics/argo/users/ed7982/crvi-analysis/acute/rna/raw_rna_list.txt
+cd /Genomics/argo/users/ed7982/crvi-analysis/acute/rna
+
+
+-a file:/Genomics/argo/users/ed7982/crvi-analysis/acute/rna/AdaptersTrim.fasta --poly-A --quality-cutoff 10,0 -e 1 --trim-n --nextseq-trim=20 -m 20 --overlap 2
+
+awk '{
+    sample_name=$1
+    fastq1="/Genomics/ayroleslab2/scott/git/chromium/data/acute/rna/2427__" sample_name "-read-1.fastq.gz"
+    fastq4="/Genomics/ayroleslab2/scott/git/chromium/data/acute/rna/2427__" sample_name "-read-4.fastq.gz"
+    adapters="-a file:/Genomics/argo/users/ed7982/crvi-analysis/acute/rna/AdaptersTrim.fasta --poly-A --quality-cutoff 10,0 -e 1 --trim-n --nextseq-trim=20 -m 20 --overlap 2"
+    print sample_name "\t" sample_name "\t" fastq1 "\t" fastq4 "\t" "\t" adapters "\t" "none"
+}' raw_rna_list.txt > rna_unit_sheet_noheader.txt
+
+echo -e "sample_name\tunit_name\tfq1\tfq2\tsra\tadapters\tstrandedness" > rna_unit_sheet_headeronly.txt
+
+cat rna_unit_sheet_headeronly.txt rna_unit_sheet_noheader.txt > rna_unit_sheet.tsv
+
+
+
+###################################
+#####GET BODY/HEAD SHEETS ONLY#####
+###################################
+awk 'NR==1 || $1 ~ /_b_/' rna_sample_sheet.tsv > rna_sample_sheet_body.tsv
+awk 'NR==1 || $1 ~ /_b_/' rna_unit_sheet.tsv > rna_unit_sheet_body.tsv
+
+awk 'NR==1 || $1 ~ /_h_/' rna_sample_sheet.tsv > rna_sample_sheet_head.tsv
+awk 'NR==1 || $1 ~ /_h_/' rna_unit_sheet.tsv > rna_unit_sheet_head.tsv
+
+
+#moved over manually
