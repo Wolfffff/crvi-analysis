@@ -1,0 +1,39 @@
+executor: slurm
+use-conda: True
+jobs: 1024 # Have up to N jobs submitted at any given time
+latency-wait: 100 # Wait N seconds for output files due to latency
+retries: 0 # Retry jobs N times.
+
+# These resources will be applied to all rules. Can be overriden on a per-rule basis below.
+default-resources:
+  mem_mb: attempt * 4000
+  mem_mb_reduced: (attempt * 4000) * 0.9 # Mem allocated to java for GATK rules (tries to prevent OOM errors)
+  runtime: 720 # In minutes 
+
+#not inlcuding rule all
+set-threads:
+  align: 24                                                                                                                                                                                                                                                                                                            
+  bwa_index: 1                                                                                                                                                
+  count_matrix: 1                                                                                                                                              
+  cutadapt_pe: 8                                                                                                                                               
+  cutadapt_pipe: 1                                                                                                                                             
+  cutadapt_se: 8                                                                                                                                               
+  deseq2: 1                                                                                                                                                    
+  deseq2_init: 1                                                                                                                                               
+  gene_2_symbol: 1                                                                                                                                             
+  genome_faidx: 1
+  get_annotation: 1
+  get_genome: 1
+  get_sra: 1
+  multiqc: 1
+  pca: 1
+  rseqc_gtf2bed: 1
+  rseqc_infer: 1
+  rseqc_innerdis: 1
+  rseqc_junction_annotation: 1
+  rseqc_junction_saturation: 1
+  rseqc_readdis: 1
+  rseqc_readdup: 1
+  rseqc_readgc: 1
+  rseqc_stat: 1
+  star_index: 4

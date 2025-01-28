@@ -43,4 +43,14 @@ acute/dna/logs/*
 
 acute/dna/manual_samstats/stats/*
 void/*
-acute/rna/body/.snakemake/
+
+acute/rna/body/.snakemake/1
+acute/rna/head/.snakemake/*
+acute/rna/head/resources/*
+acute/rna/head/results/*
+acute/rna/head/logs/*
+acute/rna/head/pipe/*
+acute/rna/archive/*
+acute/dna/manual_samstats/stats/*
+
+

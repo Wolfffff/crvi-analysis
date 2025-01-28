@@ -1,6 +1,6 @@
 # crvi-analysis
 
-.
+
 ├── snpArcher
 ├── project_1/
 │   ├── config/
