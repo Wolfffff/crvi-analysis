@@ -19,7 +19,8 @@
 mamba activate snparcher
 snakemake -s ./snpArcher/workflow/Snakefile -d ./longevity --cores all --use-conda --workflow-profile ./longevity/config/profiles/slurm
 
-snakemake -s ./snpArcher/workflow/Snakefile -d ./acute/dna --cores all --use-conda --workflow-profile ./acute/dna/config/profiles/slurm --rerun-incomplete 
+snakemake -s ./snpArcher/workflow/Snakefile -d ./acute/dna --cores all --use-conda --workflow-profile ./acute/dna/config/profiles/slurm --rerun-incomplete --dry-run
+
 
 --dry-run
 
@@ -34,3 +35,19 @@ snakedeploy deploy-workflow https://github.com/snakemake-workflows/rna-seq-star-
 
 snakemake -s ./acute/rna/body/workflow/Snakefile -d ./acute/rna/body --cores all --use-conda --rerun-incomplete 
 snakemake --cores all --use-conda --rerun-incomplete 
+
+
+cd /Genomics/argo/users/ed7982/crvi-analysis/acute/rna
+
+head -n 3 rna_sample_sheet_head.tsv > ./head/rna_sample_sheet_head_top3.tsv
+head -n 3 rna_unit_sheet_head.tsv > ./head/rna_unit_sheet_head_top3.tsv 
+
+
+
+snakemake -s ./acute/rna/body/rna-seq-star-deseq2/workflow/Snakefile -d ./acute/rna/head --cores all --use-conda --rerun-incomplete --workflow-profile ./acute/rna/head/config/profiles/slurm
+
+
+<!-- conda install r-base r-ashr r-stringr rseqc r-tidyverse r-dbplyr -->
+<!-- + biomart + DESeq2 -->
+
+mamba create -c conda-forge -c bioconda --name stardeseq snakemake snakedeploy conda r-base r-ashr r-stringr rseqc r-tidyverse r-dbplyr bioconductor-deseq2 bioconductor-biomart=2.56

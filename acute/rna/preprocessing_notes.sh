@@ -33,7 +33,7 @@ awk -F'_' '{
     else { print "Error: Invalid plate value in line: " $0 > "/dev/stderr"; next; }
 
     # Print the output
-    print $0, treatment, tissue, plate, date;
+    print $0 "\t" treatment "\t" tissue "\t" plate "\t" date;
 }' raw_rna_list.txt > rna_sample_sheet_noheader.txt
 
 echo -e "sample_name\ttreatment\ttissue\tplate\tdate" > rna_sample_sheet_headeronly.txt
@@ -73,19 +73,20 @@ for file in 2427__*fastq.gz; do echo "$file" | awk -F'2427__|-read' '{print $2}'
 cd /Genomics/argo/users/ed7982/crvi-analysis/acute/rna
 
 
--a file:/Genomics/argo/users/ed7982/crvi-analysis/acute/rna/AdaptersTrim.fasta --poly-A --quality-cutoff 10,0 -e 1 --trim-n --nextseq-trim=20 -m 20 --overlap 2
+#-a file:/Genomics/argo/users/ed7982/crvi-analysis/acute/rna/AdaptersTrim.fasta --poly-a --quality-cutoff 10,0 -e 1 --trim-n --nextseq-trim=20 -m 20 --overlap 2
 
 awk '{
     sample_name=$1
     fastq1="/Genomics/ayroleslab2/scott/git/chromium/data/acute/rna/2427__" sample_name "-read-1.fastq.gz"
     fastq4="/Genomics/ayroleslab2/scott/git/chromium/data/acute/rna/2427__" sample_name "-read-4.fastq.gz"
-    adapters="-a file:/Genomics/argo/users/ed7982/crvi-analysis/acute/rna/AdaptersTrim.fasta --poly-A --quality-cutoff 10,0 -e 1 --trim-n --nextseq-trim=20 -m 20 --overlap 2"
+    adapters="-a file:/Genomics/argo/users/ed7982/crvi-analysis/acute/rna/AdaptersTrim.fasta --poly-a --quality-cutoff 10,0 -e 1 --trim-n --nextseq-trim=20 -m 20 --overlap 2"
     print sample_name "\t" sample_name "\t" fastq1 "\t" fastq4 "\t" "\t" adapters "\t" "none"
 }' raw_rna_list.txt > rna_unit_sheet_noheader.txt
 
 echo -e "sample_name\tunit_name\tfq1\tfq2\tsra\tadapters\tstrandedness" > rna_unit_sheet_headeronly.txt
 
 cat rna_unit_sheet_headeronly.txt rna_unit_sheet_noheader.txt > rna_unit_sheet.tsv
+rm rna_unit_sheet_noheader.txt rna_unit_sheet_headeronly.txt rna_sample_sheet_noheader.txt rna_sample_sheet_headeronly.txt
 
 
 
@@ -100,3 +101,6 @@ awk 'NR==1 || $1 ~ /_h_/' rna_unit_sheet.tsv > rna_unit_sheet_head.tsv
 
 
 #moved over manually
+
+head -n 3 rna_sample_sheet_head.tsv > ./head/rna_sample_sheet_head_top3.tsv
+head -n 3 rna_unit_sheet_head.tsv > ./head/rna_unit_sheet_head_top3.tsv 

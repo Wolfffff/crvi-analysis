@@ -1,9 +1,9 @@
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
-samples: config/rna_sample_sheet_head.tsv
+samples: config/rna_sample_sheet_head_top3.tsv
 # path or URL to sequencing unit sheet (TSV format, columns: sample, unit, fq1, fq2)
 # Units are technical replicates (e.g. lanes, or resequencing of the same biological
 # sample).
-units: config/rna_unit_sheet_head.tsv
+units: config/rna_unit_sheet_head_top3.tsv
 
 ref:
   # Ensembl species name
@@ -42,14 +42,14 @@ diffexp:
   # variables whose effect you want to model to separate them from your
   # variables_of_interest
   batch_effects:
-    - date
-    - plate
+  #  - date
+  #  - plate
   # contrasts for the deseq2 results method to determine fold changes
   contrasts:
     treated-vs-untreated:
       # must be one of the variables_of_interest
       variable_of_interest: treatment
-      level_of_interest: 3mm
+      level_of_interest: 3mM
       # must be one of the variables_of_interest, for details see:
       # https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#contrasts
       # variable_of_interest: treatment
