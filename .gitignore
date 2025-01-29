@@ -52,5 +52,7 @@ acute/rna/head/logs/*
 acute/rna/head/pipe/*
 acute/rna/archive/*
 acute/dna/manual_samstats/stats/*
-
-
+acute/rna/body/results
+acute/rna/body/.snakemake/
+acute/rna/body/pipe/
+acute/rna/body/resources/
