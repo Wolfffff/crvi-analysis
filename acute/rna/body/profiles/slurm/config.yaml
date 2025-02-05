@@ -1,0 +1,90 @@
+executor: slurm
+use-conda: True
+jobs: 1024 # Have up to N jobs submitted at any given time
+latency-wait: 100 # Wait N seconds for output files due to latency
+retries: 0 # Retry jobs N times.
+
+# These resources will be applied to all rules. Can be overridden on a per-rule basis below.
+default-resources:
+  mem_mb: attempt * 10000
+  mem_mb_reduced: (attempt * 10000) * 0.9 # Mem allocated to java for GATK rules (tries to prevent OOM errors)
+  runtime: 720 # In minutes 
+  cpus_per_task: 2
+
+# Rule-specific memory requests
+set-resources:
+  align:
+    mem_mb: 32000  # 64 GB, STAR alignment can be memory-intensive
+    cpus_per_task: 24  # Match align threads
+  bwa_index:
+    mem_mb: 4000  # 16 GB, indexing needs moderate memory
+    cpus_per_task: 1
+  count_matrix:
+    mem_mb: 16000  # 16 GB, handling large count matrices can require memory
+    cpus_per_task: 1
+  cutadapt_pe:
+    mem_mb: 8000   # 8 GB, trimming paired-end reads
+    cpus_per_task: 8  # Match cutadapt_pe threads
+  cutadapt_pipe:
+    mem_mb: 4000   # 4 GB, simpler trimming tasks
+    cpus_per_task: 1
+  cutadapt_se:
+    mem_mb: 8000   # 8 GB, trimming single-end reads
+    cpus_per_task: 8  # Match cutadapt_se threads
+  deseq2:
+    mem_mb: 32000  # 32 GB, differential expression analysis with DESeq2
+    cpus_per_task: 1
+  deseq2_init:
+    mem_mb: 16000  # 16 GB, preprocessing for DESeq2
+    cpus_per_task: 1
+  gene_2_symbol:
+    mem_mb: 4000   # 4 GB, small table lookup
+    cpus_per_task: 1
+  genome_faidx:
+    mem_mb: 8000   # 8 GB, genome indexing
+    cpus_per_task: 1
+  get_annotation:
+    mem_mb: 4000   # 4 GB, annotation retrieval
+    cpus_per_task: 1
+  get_genome:
+    mem_mb: 8000   # 8 GB, genome retrieval
+    cpus_per_task: 1
+  get_sra:
+    mem_mb: 4000   # 4 GB, downloading SRA data
+    cpus_per_task: 1
+  multiqc:
+    mem_mb: 8000   # 8 GB, multi-sample QC
+    cpus_per_task: 1
+  pca:
+    mem_mb: 16000  # 16 GB, PCA analysis
+    cpus_per_task: 1
+  rseqc_gtf2bed:
+    mem_mb: 4000   # 4 GB, simple conversion
+    cpus_per_task: 1
+  rseqc_infer:
+    mem_mb: 8000   # 8 GB, RSeQC gene inference
+    cpus_per_task: 1
+  rseqc_innerdis:
+    mem_mb: 8000   # 8 GB, inner distance analysis
+    cpus_per_task: 1
+  rseqc_junction_annotation:
+    mem_mb: 8000   # 8 GB, junction annotation
+    cpus_per_task: 1
+  rseqc_junction_saturation:
+    mem_mb: 8000   # 8 GB, junction saturation analysis
+    cpus_per_task: 1
+  rseqc_readdis:
+    mem_mb: 8000   # 8 GB, read distribution analysis
+    cpus_per_task: 1
+  rseqc_readdup:
+    mem_mb: 8000   # 8 GB, duplication analysis
+    cpus_per_task: 1
+  rseqc_readgc:
+    mem_mb: 8000   # 8 GB, GC content analysis
+    cpus_per_task: 1
+  rseqc_stat:
+    mem_mb: 8000   # 8 GB, general RSeQC statistics
+    cpus_per_task: 1
+  star_index:
+    mem_mb: 32000  # 32 GB, STAR genome indexing
+    cpus_per_task: 4  # Match star_index threads
