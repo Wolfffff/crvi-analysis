@@ -188,49 +188,49 @@ set-resources:
     runtime:
     cpus_per_task:
   create_db_mapfile:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:
   gvcf2DB: # GenomicsDBImport
-    mem_mb: attempt * 2000
-    mem_mb_reduced: (attempt * 2000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
+    mem_mb: attempt * 40000
+    mem_mb_reduced: (attempt * 40000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
     slurm_partition:
     runtime:
     cpus_per_task:
     
   # VCF
   DB2vcf: # GenotypeGVCFs
-    mem_mb: attempt * 2000
-    mem_mb_reduced: (attempt * 2000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
+    mem_mb: attempt * 80000
+    mem_mb_reduced: (attempt * 80000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
     slurm_partition:
     runtime:
     cpus_per_task:
 
   filterVcfs:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:
   sort_gatherVcfs:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:
 
   # Callable Bed  
   compute_d4:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:
   create_cov_bed:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:
   merge_d4:
-    mem_mb: attempt * 2000
+    mem_mb: attempt * 10000
     slurm_partition:
     runtime:
     cpus_per_task:

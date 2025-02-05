@@ -1,9 +1,9 @@
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
-samples: config/rna_sample_sheet_head_top3.tsv
+samples: config/rna_sample_sheet_head.tsv
 # path or URL to sequencing unit sheet (TSV format, columns: sample, unit, fq1, fq2)
 # Units are technical replicates (e.g. lanes, or resequencing of the same biological
 # sample).
-units: config/rna_unit_sheet_head_top3.tsv
+units: config/rna_unit_sheet_head.tsv
 
 ref:
   # Ensembl species name

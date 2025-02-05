@@ -78,9 +78,9 @@ cd /Genomics/argo/users/ed7982/crvi-analysis/acute/rna
 awk '{
     sample_name=$1
     fastq1="/Genomics/ayroleslab2/scott/git/chromium/data/acute/rna/2427__" sample_name "-read-1.fastq.gz"
-    fastq4="/Genomics/ayroleslab2/scott/git/chromium/data/acute/rna/2427__" sample_name "-read-4.fastq.gz"
+    #fastq4="/Genomics/ayroleslab2/scott/git/chromium/data/acute/rna/2427__" sample_name "-read-4.fastq.gz"
     adapters="-a file:/Genomics/argo/users/ed7982/crvi-analysis/acute/rna/AdaptersTrim.fasta --poly-a --quality-cutoff 10,0 -e 1 --trim-n --nextseq-trim=20 -m 20 --overlap 2"
-    print sample_name "\t" sample_name "\t" fastq1 "\t" fastq4 "\t" "\t" adapters "\t" "none"
+    print sample_name "\t" sample_name "\t" fastq1 "\t" "\t" "\t" adapters "\t" "none" #removed fq4
 }' raw_rna_list.txt > rna_unit_sheet_noheader.txt
 
 echo -e "sample_name\tunit_name\tfq1\tfq2\tsra\tadapters\tstrandedness" > rna_unit_sheet_headeronly.txt

@@ -44,10 +44,16 @@ head -n 3 rna_unit_sheet_head.tsv > ./head/rna_unit_sheet_head_top3.tsv
 
 
 
-snakemake -s ./acute/rna/body/rna-seq-star-deseq2/workflow/Snakefile -d ./acute/rna/head --cores all --use-conda --rerun-incomplete --workflow-profile ./acute/rna/head/config/profiles/slurm
+snakemake -s ./acute/rna/body/rna-seq-star-deseq2/workflow/Snakefile -d ./acute/rna/head --cores all --use-conda --workflow-profile ./acute/rna/head/config/profiles/slurm -F
 
 
 <!-- conda install r-base r-ashr r-stringr rseqc r-tidyverse r-dbplyr -->
 <!-- + biomart + DESeq2 -->
 
 mamba create -c conda-forge -c bioconda --name stardeseq snakemake snakedeploy conda r-base r-ashr r-stringr rseqc r-tidyverse r-dbplyr bioconductor-deseq2 bioconductor-biomart=2.56
+
+
+snakemake -s ./snpArcher/workflow/Snakefile -d ./longevity --cores all --use-conda --workflow-profile ./longevity/config/profiles/slurm --rerun-incomplete
+
+bcftools +setGT acute_dna_raw_toedit.vcf.gz -- -t q -n . -e 'FMT/DP>=4' > acute_dna_raw_toedit_replaced.vcf
+

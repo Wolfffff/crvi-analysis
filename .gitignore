@@ -56,3 +56,7 @@ acute/rna/body/results
 acute/rna/body/.snakemake/
 acute/rna/body/pipe/
 acute/rna/body/resources/
+
+longevity/
+
+*vcf.gz
